@@ -1,0 +1,40 @@
+{
+  "executedAt": "2026-10-21T18:57:34.415Z",
+  "scope": "Consultas OpenWeather reais e código do JSON fora do n8n; sem mensagens Telegram.",
+  "results": [
+    {
+      "entry": "São Paulo,SP,BR",
+      "geocodingStatus": 200,
+      "weatherStatus": 200,
+      "coordinateFallback": false,
+      "responseValid": true,
+      "message": "🌤️ A temperatura em São Paulo é de 22°C.",
+      "passed": true
+    },
+    {
+      "entry": "Belo Horizonte,MG,BR",
+      "geocodingStatus": 200,
+      "weatherStatus": 200,
+      "coordinateFallback": false,
+      "responseValid": true,
+      "message": "🌤️ A temperatura em Belo Horizonte é de 27°C.",
+      "passed": true
+    },
+    {
+      "entry": "Florianópolis,SC,BR",
+      "geocodingStatus": 200,
+      "weatherStatus": 200,
+      "coordinateFallback": true,
+      "responseValid": true,
+      "message": "🌤️ A temperatura em Florianópolis é de 21°C.",
+      "passed": true
+    },
+    {
+      "entry": "CidadeInexistenteXYZ,SP,BR",
+      "geocodingStatus": 200,
+      "locationFound": false,
+      "message": "❌ Cidade não encontrada. Use o formato Cidade,UF,BR (ex.: São Paulo,SP,BR).",
+      "passed": true
+    }
+  ]
+}

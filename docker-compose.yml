@@ -1,0 +1,103 @@
+name: climabot-telegram
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.44.5
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5682:5678"
+    networks:
+      - climabot_network
+    labels:
+      app: climabot-telegram
+      component: workflow-engine
+    environment:
+      TZ: America/Sao_Paulo
+      GENERIC_TIMEZONE: America/Sao_Paulo
+      N8N_PORT: "5678"
+      N8N_HOST: localhost
+      N8N_PROTOCOL: http
+      N8N_EDITOR_BASE_URL: http://localhost:5682/
+      N8N_WEBHOOK_URL: ${WEBHOOK_URL:?Configure a URL HTTPS publica em .env}
+      N8N_PROXY_HOPS: "2"
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Gere uma chave local em .env}
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+      # Exigido para a expressão $env.OPENWEATHER_API_KEY do desafio.
+      # Use uma instância dedicada, sem editores não confiáveis.
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      N8N_RUNNERS_MODE: external
+      N8N_RUNNERS_BROKER_LISTEN_ADDRESS: 0.0.0.0
+      N8N_RUNNERS_AUTH_TOKEN: ${N8N_RUNNERS_AUTH_TOKEN:?Gere um segredo interno para o executor em .env}
+      N8N_RUNNERS_TASK_TIMEOUT: "60"
+      N8N_UNVERIFIED_PACKAGES_ENABLED: "false"
+      OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY:?Configure a chave em .env}
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+      EXECUTIONS_DATA_PRUNE: "true"
+      EXECUTIONS_DATA_MAX_AGE: "24"
+      EXECUTIONS_DATA_SAVE_ON_SUCCESS: none
+      EXECUTIONS_DATA_SAVE_ON_ERROR: none
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflow-chatbot-telegram.json:/opt/climabot/workflow-chatbot-telegram.json:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5678/healthz/readiness').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  task-runners:
+    image: n8nio/runners:2.44.5
+    restart: unless-stopped
+    networks:
+      - climabot_network
+    environment:
+      N8N_RUNNERS_TASK_BROKER_URI: http://n8n:5679
+      N8N_RUNNERS_AUTH_TOKEN: ${N8N_RUNNERS_AUTH_TOKEN:?Gere um segredo interno para o executor em .env}
+    depends_on:
+      n8n:
+        condition: service_started
+    labels:
+      app: climabot-telegram
+      component: code-runner
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5680/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  webhook-gateway:
+    image: nginx:1.28-alpine
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5684:8080"
+    networks:
+      - climabot_network
+    volumes:
+      - ./infra/nginx-webhooks.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      n8n:
+        condition: service_healthy
+    labels:
+      app: climabot-telegram
+      component: webhook-gateway
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  n8n_data:
+    labels:
+      app: climabot-telegram
+      purpose: workflows-and-credentials
+
+networks:
+  climabot_network:
+    driver: bridge
+    labels:
+      app: climabot-telegram
