@@ -21,7 +21,8 @@ Data da verificação local: 21/10/2026.
 | HTTPS | PASSOU | Gateway público: healthz 200, raiz 404, rest/settings 404; editor bloqueado externamente |
 | Telegram: recebimento e resposta | PASSOU — confirmação e captura | Quatro casos confirmados pelo usuário e visíveis na captura fornecida; mensagens entre 16:04 e 16:05. IDs de execução não capturados |
 | Export final | PASSOU | Exportado da instância Docker testada; credenciais removidas, pinData vazio e active=false; 49 verificações passaram novamente |
-| Publicação/submissão | NÃO REALIZADAS | Dependem dos testes de integração e do repositório público |
+| Publicação GitHub | PASSOU | Repositório público MatheusNetto97/chatbot-telegram; 15 arquivos conferidos por hash e README/JSON acessíveis sem autenticação (HTTP 200) |
+| Submissão Rocketseat | PENDENTE | Link do repositório ainda precisa ser enviado na plataforma |
 
 Nenhum segredo foi incluído nos arquivos de entrega. A chave OpenWeather está configurada no `.env` privado e no contêiner n8n; o executor não recebe essa chave nem a chave de criptografia. O workflow foi publicado na instância dedicada e o webhook Telegram foi confirmado via getWebhookInfo: registrado, apontando para o projeto e sem erro. O usuário confirmou o recebimento correto dos quatro casos no Telegram. Os testes independentes da API não enviaram mensagens Telegram; a evidência de entrega no chat é a confirmação manual do usuário. O volume Docker e a rede exclusivos já foram criados. O HTTPS foi configurado no ambiente privado e passa pelo gateway de webhooks.
 
@@ -82,4 +83,4 @@ Os quatro casos foram solicitados após a publicação e o registro do webhook d
 
 ## Critério de liberação
 
-Os quatro casos reais foram confirmados manualmente e por captura do Telegram, a versão publicada foi verificada e o export final foi revisado. A preparação técnica local está concluída; publicação do repositório e submissão ainda não foram realizadas. A cobertura geográfica limitada a cinco candidatos e o fallback por coordenadas estão documentados no README.
+Os quatro casos reais foram confirmados manualmente e por captura do Telegram, a versão publicada foi verificada e o export final foi revisado. A preparação técnica e a publicação estão concluídas. O repositório público está disponível em https://github.com/MatheusNetto97/chatbot-telegram; a submissão na Rocketseat ainda não foi realizada. A cobertura geográfica limitada a cinco candidatos e o fallback por coordenadas estão documentados no README.

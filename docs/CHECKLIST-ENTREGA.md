@@ -36,9 +36,11 @@ Confirmação manual e captura do Telegram recebidas em 21/10/2026 para os quatr
 
 ## Publicação e submissão
 
-- [ ] Criar repositório público `chatbot-telegram`.
-- [ ] Publicar JSON final e README, com os auxiliares revisados.
-- [ ] Confirmar que `.env`, tokens e credenciais não aparecem no histórico.
-- [ ] Abrir repositório em janela anônima e conferir acesso.
+- [x] Criar repositório público `chatbot-telegram`.
+- [x] Publicar JSON final e README, com os auxiliares revisados.
+- [x] Confirmar que `.env`, tokens e credenciais não aparecem no histórico.
+- [x] Conferir acesso público por requisições sem autenticação (README e JSON: HTTP 200).
 - [ ] Submeter o link na Rocketseat e guardar confirmação.
 - [ ] Encerrar túnel e desligar instância após a demonstração, preservando o volume.
+
+Repositório: https://github.com/MatheusNetto97/chatbot-telegram
