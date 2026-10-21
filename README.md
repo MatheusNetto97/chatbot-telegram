@@ -2,6 +2,16 @@
 
 Chatbot desenvolvido com n8n para consultar a temperatura atual de cidades brasileiras pelo Telegram. O projeto integra Telegram e OpenWeather, valida cidade e UF e devolve uma mensagem curta em português.
 
+## Testar o bot
+
+Acesse **[SkyClima no Telegram](https://t.me/skyclimabot)**, toque em **Iniciar** e envie:
+
+```text
+São Paulo,SP,BR
+```
+
+A demonstração depende do computador que hospeda o projeto, do Docker e do túnel ngrok em execução. Se o bot estiver indisponível, o workflow e as instruções abaixo permitem configurar uma instância própria.
+
 **Entrada**
 
 ```text
